@@ -1,0 +1,25 @@
+---
+
+- name: Generic Router Configuration
+  hosts: routers
+  gather_facts: false
+  connection: local
+
+  
+  tasks:
+    - name: show commands
+      ios_command:
+        commands:
+          - show ip int brief
+      register: config
+
+
+#print output to screen
+    - debug:
+        var: config.stdout_lines 
+
+
+    - name: ping test
+      ios_ping:
+        vrf: MGMT  
+        dest: 10.199.199.1        
